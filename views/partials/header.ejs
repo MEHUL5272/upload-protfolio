@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/css/header.css">
+
+<header class="navbar">
+  <a class="brand" href="/">
+    <span class="brand-icon">☕</span>
+    <span>Shree Shyam <b>Coffee</b></span>
+  </a>
+
+  <nav class="nav-links">
+    <a href="/">Home</a>
+    <a href="/products">Menu</a>
+
+    <a href="/cart" class="cart-link">
+      Cart (<%= typeof cartCount !== "undefined" ? cartCount : 0 %>)
+    </a>
+
+    <a href="/my-orders">My Orders</a>
+
+    <% if (currentUser) { %>
+      <a href="/profile">
+        Hi, <%= currentUser.name || currentUser.fullName || currentUser.email %>
+      </a>
+      <a href="/api/auth/logout">Logout</a>
+    <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/register">Signup</a>
+    <% } %>
+  </nav>
+</header>

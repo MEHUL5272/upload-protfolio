@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Products</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <main class="admin-container">
+    <header class="page-header">
+      <div>
+        <h1>Manage Products</h1>
+        <p>View and manage your coffee products.</p>
+      </div>
+      <a class="button" href="/admin/products/add">+ Add Product</a>
+    </header>
+
+    <a class="back-link" href="/admin">← Admin Dashboard</a>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Available</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (products.length === 0) { %>
+            <tr><td colspan="6" class="empty">No products found.</td></tr>
+          <% } %>
+
+          <% products.forEach(product => { %>
+            <tr>
+              <td><%= product.name %></td>
+              <td><%= product.categoryId ? product.categoryId.name : "Category removed" %></td>
+              <td>₹<%= product.price %></td>
+              <td><%= product.size %></td>
+              <td><%= product.isAvailable ? "Yes" : "No" %></td>
+              <td class="actions">
+                <a href="/admin/products/<%= product._id %>/edit">Edit</a>
+                <form action="/admin/products/<%= product._id %>/delete" method="POST"
+                      onsubmit="return confirm('Delete this product?')">
+                  <button class="delete-button" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>

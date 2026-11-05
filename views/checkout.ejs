@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Shree Shyam Coffee</title>
+  <link rel="stylesheet" href="/css/checkout.css">
+</head>
+<body>
+  <header class="checkout-header">
+    <a class="brand" href="/">
+      <span class="brand-mark">SS</span>
+      <span>SHREE SHYAM <b>COFFEE</b></span>
+    </a>
+    <a class="back-link" href="/cart">← Back to cart</a>
+  </header>
+
+  <main class="checkout-shell">
+    <section class="checkout-intro">
+      <span class="eyebrow">ALMOST THERE</span>
+      <h1>Make it <em>yours.</em></h1>
+      <p>Share your delivery details and we’ll prepare your coffee with care.</p>
+
+      <div class="checkout-steps" aria-label="Checkout progress">
+        <span class="step done"><i>✓</i> Cart</span>
+        <span class="step-line"></span>
+        <span class="step active"><i>2</i> Delivery</span>
+        <span class="step-line"></span>
+        <span class="step"><i>3</i> Confirmation</span>
+      </div>
+    </section>
+
+    <div class="checkout-grid">
+      <section class="form-card">
+        <div class="card-heading">
+          <div>
+            <span class="eyebrow">DELIVERY DETAILS</span>
+            <h2>Where should we bring it?</h2>
+          </div>
+          <span class="heading-icon" aria-hidden="true">⌖</span>
+        </div>
+
+        <form id="checkout-form">
+          <div class="field">
+            <label for="customerName">Full name</label>
+            <input
+              id="customerName"
+              name="customerName"
+              type="text"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              inputmode="numeric"
+              pattern="[0-9]{10}"
+              maxlength="10"
+              placeholder="10-digit mobile number"
+              autocomplete="tel"
+              required
+            >
+            <small>We’ll use this number if the delivery partner needs to reach you.</small>
+          </div>
+
+          <div class="field">
+            <label for="address">Delivery address</label>
+            <textarea
+              id="address"
+              name="address"
+              rows="4"
+              placeholder="House / flat, street, area, city and landmark"
+              autocomplete="street-address"
+              required
+            ></textarea>
+          </div>
+
+          <div class="secure-note">
+            <span aria-hidden="true">♧</span>
+            <span>Your details are used only to process this order.</span>
+          </div>
+
+          <button id="place-order-button" class="place-order-button" type="submit">
+            <span>Place my order</span>
+            <span aria-hidden="true">→</span>
+          </button>
+
+          <p id="checkout-message" class="checkout-message" role="status" aria-live="polite"></p>
+
+          <nav id="order-links" class="success-links" hidden>
+            <a href="/my-orders">View my orders</a>
+            <a href="/">Continue shopping</a>
+          </nav>
+        </form>
+      </section>
+
+      <aside class="summary-card">
+        <div class="summary-top">
+          <span class="eyebrow">A LITTLE COFFEE MAGIC</span>
+          <div class="coffee-art" aria-hidden="true">
+            <span class="steam steam-one"></span>
+            <span class="steam steam-two"></span>
+            <span class="cup">☕</span>
+          </div>
+          <h2>Freshly made.<br><em>Just for you.</em></h2>
+          <p>Every cup is prepared fresh, packed with care, and sent your way.</p>
+        </div>
+
+        <div class="summary-bottom">
+          <div class="summary-row">
+            <span>Order</span>
+            <strong>Made fresh</strong>
+          </div>
+          <div class="summary-row">
+            <span>Payment</span>
+            <strong>As arranged</strong>
+          </div>
+          <div class="summary-divider"></div>
+          <p>Need to change something? Go back to your cart before placing the order.</p>
+          <a class="summary-cart-link" href="/cart">Review cart <span>↗</span></a>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="checkout-footer">
+      <span>SHREE SHYAM COFFEE</span>
+      <span>Made with care, delivered with love.</span>
+    </footer>
+  </main>
+
+  <script>
+    const checkoutForm = document.getElementById("checkout-form");
+    const checkoutMessage = document.getElementById("checkout-message");
+    const submitButton = document.getElementById("place-order-button");
+    const orderLinks = document.getElementById("order-links");
+
+    checkoutForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const orderData = {
+        customerName: checkoutForm.elements.customerName.value.trim(),
+        phone: checkoutForm.elements.phone.value.trim(),
+        address: checkoutForm.elements.address.value.trim()
+      };
+
+      if (!/^[0-9]{10}$/.test(orderData.phone)) {
+        checkoutMessage.textContent = "Please enter a valid 10-digit phone number.";
+        checkoutMessage.className = "checkout-message error";
+        return;
+      }
+
+      try {
+        submitButton.disabled = true;
+        submitButton.querySelector("span").textContent = "Placing your order...";
+        checkoutMessage.textContent = "Please wait while we confirm your order.";
+        checkoutMessage.className = "checkout-message";
+        orderLinks.hidden = true;
+
+        const response = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          checkoutMessage.textContent =
+            result.message || "Your order could not be placed. Please try again.";
+          checkoutMessage.className = "checkout-message error";
+          return;
+        }
+
+        checkoutMessage.textContent = `Order placed successfully! Order ID: ${result.orderId}`;
+        checkoutMessage.className = "checkout-message success";
+        checkoutForm.reset();
+        orderLinks.hidden = false;
+      } catch (error) {
+        checkoutMessage.textContent = "Could not connect to the server. Please try again.";
+        checkoutMessage.className = "checkout-message error";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.querySelector("span").textContent = "Place my order";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product ? "Edit Product" : "Add Product" %></title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <main class="admin-container">
+    <h1><%= product ? "Edit Product" : "Add Product" %></h1>
+    <p><a class="back-link" href="/admin/products">← Back to Products</a></p>
+
+    <% if (error) { %>
+      <p class="error-message"><%= error %></p>
+    <% } %>
+
+    <form
+      class="product-form"
+      action="<%= product ? `/admin/products/${product._id}/edit` : '/admin/products/add' %>"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <label for="name">Product name</label>
+      <input
+        id="name"
+        type="text"
+        name="name"
+        value="<%= product ? product.name : '' %>"
+        required
+      >
+
+      <label for="description">Description</label>
+      <textarea id="description" name="description"><%= product ? product.description : '' %></textarea>
+
+      <label for="price">Price (₹)</label>
+      <input
+        id="price"
+        type="number"
+        name="price"
+        min="0"
+        step="0.01"
+        value="<%= product ? product.price : '' %>"
+        required
+      >
+
+      <label for="size">Size</label>
+      <input
+        id="size"
+        type="text"
+        name="size"
+        value="<%= product ? product.size : '350 ml' %>"
+      >
+
+      <label for="image">Product image</label>
+      <input id="image" type="file" name="image" accept="image/*">
+
+      <% if (product && product.image) { %>
+        <p>Current image:</p>
+        <img
+          src="<%= product.image %>"
+          alt="<%= product.name %>"
+          style="width:110px; height:90px; object-fit:cover; border-radius:8px;"
+        >
+      <% } %>
+
+      <label for="categoryId">Category</label>
+      <select id="categoryId" name="categoryId" required>
+        <option value="">Select category</option>
+
+        <% categories.forEach(category => { %>
+          <option
+            value="<%= category._id %>"
+            <%= product && product.categoryId.toString() === category._id.toString() ? "selected" : "" %>
+          >
+            <%= category.name %>
+          </option>
+        <% }) %>
+      </select>
+
+      <button type="submit">
+        <%= product ? "Update Product" : "Add Product" %>
+      </button>
+    </form>
+  </main>
+</body>
+</html>

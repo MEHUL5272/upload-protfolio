@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | Shree Shyam Coffee</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+  <%- include("partials/header") %>
+
+  <main class="auth-page">
+    <section class="auth-card">
+      <div class="auth-visual">
+        <div class="auth-cup">☕</div>
+        <p class="auth-kicker">JOIN THE COFFEE CLUB</p>
+        <h1>Your next<br>favourite sip<br>starts here.</h1>
+        <p>Create an account to enjoy your Shree Shyam Coffee favourites.</p>
+      </div>
+
+      <div class="auth-content">
+        <p class="eyebrow">LET'S GET STARTED</p>
+        <h2>Create your account</h2>
+        <p class="auth-subtitle">Enter your details to sign up.</p>
+
+        <form id="registerForm" class="auth-form">
+          <label for="name">Full name</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            placeholder="Your full name"
+            autocomplete="name"
+            required>
+
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required>
+
+          <label for="phone">Mobile number <span class="optional">(optional)</span></label>
+          <input
+            id="phone"
+            type="tel"
+            name="phone"
+            placeholder="Your mobile number"
+            autocomplete="tel">
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="At least 6 characters"
+            minlength="6"
+            autocomplete="new-password"
+            required>
+
+          <button id="registerButton" type="submit">Create Account <span>→</span></button>
+          <p id="message" class="auth-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">
+          Already have an account? <a href="/login">Login</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    const registerForm = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+    const registerButton = document.getElementById("registerButton");
+
+    registerForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      message.textContent = "";
+      message.className = "auth-message";
+      registerButton.disabled = true;
+      registerButton.textContent = "Creating account...";
+
+      try {
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          message.textContent = result.message || "Account created successfully.";
+          window.location.href = "/login";
+          return;
+        }
+
+        message.textContent = result.message || "Could not create account.";
+        message.classList.add("error");
+      } catch (error) {
+        message.textContent = "Could not connect. Please try again.";
+        message.classList.add("error");
+      } finally {
+        registerButton.disabled = false;
+        registerButton.innerHTML = 'Create Account <span>→</span>';
+      }
+    });
+  </script>
+</body>
+</html>

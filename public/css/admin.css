@@ -1,0 +1,179 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 32px;
+  font-family: Arial, sans-serif;
+  color: #252b3a;
+  background: #f5f7fb;
+}
+
+.admin-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0 0 12px;
+}
+
+p {
+  margin: 0 0 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header p {
+  color: #6b7280;
+  margin: 8px 0 0;
+}
+
+a {
+  color: #5b3cc4;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.button,
+button {
+  display: inline-block;
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 7px;
+  color: white;
+  background: #5b3cc4;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:hover,
+button:hover {
+  background: #482ca8;
+  text-decoration: none;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px #18203312;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 15px 17px;
+  border-bottom: 1px solid #e8eaf0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  color: #51596b;
+  background: #eef0f7;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.empty {
+  padding: 30px;
+  color: #777;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.actions form {
+  margin: 0;
+}
+
+.delete-button {
+  padding: 8px 12px;
+  background: #d9364f;
+}
+
+.delete-button:hover {
+  background: #b8273d;
+}
+
+.product-form {
+  max-width: 650px;
+  padding: 26px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px #18203312;
+}
+
+.product-form label {
+  display: block;
+  margin: 0 0 7px;
+  font-weight: 600;
+}
+
+.product-form input,
+.product-form textarea,
+.product-form select {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #d7dbe5;
+  border-radius: 7px;
+  background: white;
+  font: inherit;
+}
+
+.product-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.error-message {
+  max-width: 650px;
+  padding: 12px;
+  color: #b42318;
+  background: #fff0ee;
+  border-radius: 6px;
+}
+
+@media (max-width: 650px) {
+  body {
+    padding: 16px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .product-form {
+    padding: 18px;
+  }
+}npm install multer

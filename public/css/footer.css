@@ -1,0 +1,124 @@
+.site-footer {
+  margin-top: 70px;
+  padding: 48px 7% 20px;
+  color: #f8eee3;
+  background: linear-gradient(135deg, #2b1710, #4b281a);
+  font-family: inherit;
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 42px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 35px;
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff7ed;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-brand b {
+  color: #e8a15a;
+}
+
+.footer-brand .brand-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #2b1710;
+  background: #e8a15a;
+  font-size: 1.4rem;
+}
+
+.footer-tagline {
+  max-width: 330px;
+  margin: 17px 0 0;
+  color: #d8c4b4;
+  line-height: 1.8;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.footer-column h3 {
+  margin: 0 0 7px;
+  color: #e8a15a;
+  font-size: 1.05rem;
+}
+
+.footer-column a,
+.footer-column p {
+  margin: 0;
+  color: #e6d8cc;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cdb9a8;
+  font-size: 0.85rem;
+}
+
+.footer-made span {
+  color: #e8a15a;
+}
+
+@media (max-width: 760px) {
+  .site-footer {
+    padding: 38px 6% 18px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 22px;
+  }
+
+  .footer-brand-section {
+    grid-column: 1 / -1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 440px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand-section {
+    grid-column: auto;
+  }
+}

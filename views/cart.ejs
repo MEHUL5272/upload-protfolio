@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | Shree Shyam Coffee</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/cart.css">
+  <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+  <%- include("partials/header") %>
+
+  <main class="cart-page">
+    <div class="cart-heading">
+      <p class="eyebrow">YOUR COFFEE PICKS</p>
+      <h1>Your Cart</h1>
+      <p>Review your treats before checking out.</p>
+    </div>
+
+    <div class="cart-layout">
+      <section class="cart-panel">
+        <div class="cart-panel-heading">
+          <h2>Cart items</h2>
+          <a href="/#menu">Continue shopping <span>→</span></a>
+        </div>
+
+        <div id="cart-items" aria-live="polite">
+          <p class="cart-message">Loading your cart...</p>
+        </div>
+      </section>
+
+      <aside class="cart-summary">
+        <h2>Order summary</h2>
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <strong>₹<span id="cart-total">0</span></strong>
+        </div>
+        <p class="summary-note">Delivery charges, if any, will be confirmed at checkout.</p>
+        <button id="checkout-btn" type="button">Proceed to Checkout <span>→</span></button>
+        <a class="back-link" href="/#menu">← Back to menu</a>
+      </aside>
+    </div>
+  </main>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    async function loadCart() {
+      const container = document.getElementById("cart-items");
+      const totalElement = document.getElementById("cart-total");
+
+      try {
+        const response = await fetch("/api/cart");
+        const result = await response.json();
+
+        if (!response.ok) {
+          container.innerHTML = "";
+          const message = document.createElement("p");
+          message.className = "cart-message";
+          message.textContent = result.message || "Could not load cart.";
+          container.appendChild(message);
+          return;
+        }
+
+        const items = result.cart?.items || [];
+
+        if (items.length === 0) {
+          container.innerHTML = `
+            <div class="empty-cart">
+              <div class="empty-cart-icon">☕</div>
+              <h3>Your cart is waiting for a treat</h3>
+              <p>Add a coffee or shake from our menu to get started.</p>
+              <a href="/#menu">Explore the menu</a>
+            </div>
+          `;
+          totalElement.textContent = "0";
+          return;
+        }
+
+        container.innerHTML = "";
+        let total = 0;
+
+        items.forEach(item => {
+          const product = item.productId;
+          if (!product) return;
+
+          const price = Number(product.price) || 0;
+          const quantity = Number(item.quantity) || 1;
+          total += price * quantity;
+
+          const row = document.createElement("article");
+          row.className = "cart-item";
+
+          const details = document.createElement("div");
+          details.className = "cart-item-details";
+
+          const icon = document.createElement("div");
+          icon.className = "cart-product-icon";
+          icon.textContent = "🥤";
+
+          const info = document.createElement("div");
+          info.className = "cart-product-info";
+
+          const name = document.createElement("h3");
+          name.textContent = product.name || "Coffee";
+
+          const priceText = document.createElement("p");
+          priceText.className = "cart-item-price";
+          priceText.textContent = `₹${price} each`;
+
+          info.append(name, priceText);
+          details.append(icon, info);
+
+          const actions = document.createElement("div");
+          actions.className = "cart-item-actions";
+
+          const controls = document.createElement("div");
+          controls.className = "quantity-controls";
+
+          const decrease = document.createElement("button");
+          decrease.type = "button";
+          decrease.className = "quantity-btn";
+          decrease.textContent = "−";
+          decrease.setAttribute("aria-label", "Decrease quantity");
+
+          const quantityLabel = document.createElement("span");
+          quantityLabel.className = "quantity";
+          quantityLabel.textContent = quantity;
+
+          const increase = document.createElement("button");
+          increase.type = "button";
+          increase.className = "quantity-btn";
+          increase.textContent = "+";
+          increase.setAttribute("aria-label", "Increase quantity");
+
+          controls.append(decrease, quantityLabel, increase);
+
+          const lineTotal = document.createElement("strong");
+          lineTotal.className = "cart-line-total";
+          lineTotal.textContent = `₹${price * quantity}`;
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "remove-btn";
+          remove.textContent = "Remove";
+
+          actions.append(controls, lineTotal, remove);
+          row.append(details, actions);
+          container.appendChild(row);
+
+          async function updateQuantity(newQuantity) {
+            if (newQuantity < 1) return;
+
+            try {
+              const updateResponse = await fetch("/api/cart/update", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  productId: product._id,
+                  quantity: newQuantity
+                })
+              });
+
+              const updateResult = await updateResponse.json();
+
+              if (updateResponse.ok && updateResult.success) {
+                await loadCart();
+              } else {
+                alert(updateResult.message || "Could not update quantity.");
+              }
+            } catch (error) {
+              alert("Error updating quantity.");
+            }
+          }
+
+          decrease.addEventListener("click", () => updateQuantity(quantity - 1));
+          increase.addEventListener("click", () => updateQuantity(quantity + 1));
+
+          remove.addEventListener("click", async () => {
+            try {
+              const removeResponse = await fetch(
+                "/api/cart/remove/" + product._id,
+                { method: "DELETE" }
+              );
+
+              const removeResult = await removeResponse.json();
+
+              if (removeResponse.ok && removeResult.success) {
+                await loadCart();
+              } else {
+                alert(removeResult.message || "Could not remove product.");
+              }
+            } catch (error) {
+              alert("Error removing product.");
+            }
+          });
+        });
+
+        totalElement.textContent = total;
+      } catch (error) {
+        container.innerHTML = "";
+        const message = document.createElement("p");
+        message.className = "cart-message";
+        message.textContent = "Error loading cart. Please refresh the page.";
+        container.appendChild(message);
+      }
+    }
+
+    document.getElementById("checkout-btn").addEventListener("click", () => {
+      window.location.href = "/checkout";
+    });
+
+    loadCart();
+  </script>
+</body>
+</html>

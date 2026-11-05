@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Shree Shyam Coffee</title>
+  <link rel="stylesheet" href="/css/admin-login.css">
+</head>
+<body>
+  <main class="login-card">
+    <p class="eyebrow">SHREE SHYAM COFFEE</p>
+    <h1>Admin Login</h1>
+    <p class="subtitle">Sign in to manage your store.</p>
+
+    <% if (error) { %>
+      <p class="error-message"><%= error %></p>
+    <% } %>
+
+    <form action="/admin/login" method="POST">
+      <label for="email">Admin email</label>
+      <input
+        id="email"
+        type="email"
+        name="email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        name="password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit">Login</button>
+    </form>
+
+    <a class="home-link" href="/">Back to website</a>
+  </main>
+</body>
+</html>

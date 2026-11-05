@@ -1,0 +1,80 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  min-height: 76px;
+  padding: 14px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: #fffaf4;
+  border-bottom: 1px solid #efdfcf;
+  box-sizing: border-box;
+}
+
+.navbar .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #38271e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navbar .brand-icon {
+  font-size: 27px;
+}
+
+.navbar .brand b {
+  color: #e87832;
+}
+
+.navbar .nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.navbar .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 13px;
+  border-radius: 999px;
+  color: #4b2b1e;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navbar .nav-links a:hover {
+  background: #4b2b1e;
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 5%;
+  }
+
+  .navbar .nav-links {
+    justify-content: flex-start;
+    gap: 4px;
+  }
+
+  .navbar .nav-links a {
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+}

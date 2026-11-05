@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Shree Shyam Coffee</title>
+  <link rel="stylesheet" href="/css/admin-dashboard.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <a class="brand" href="/admin/dashboard">
+        <span class="brand-icon">☕</span>
+        <span>
+          <strong>Shree Shyam</strong>
+          <small>COFFEE ADMIN</small>
+        </span>
+      </a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="nav-links">
+        <a class="nav-link active" href="/admin/dashboard">
+          <span>▦</span> Dashboard
+        </a>
+        <a class="nav-link" href="/admin/orders">
+          <span>▤</span> Orders
+        </a>
+        <a class="nav-link" href="/admin/products">
+          <span>☕</span> Products
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-note">
+          <span>✦</span>
+          <p>Fresh coffee.<br><strong>Happy customers.</strong></p>
+        </div>
+        <a class="logout-link" href="/admin/logout">↗ Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">STORE OVERVIEW</p>
+          <h1>Good day, Admin <span>☀</span></h1>
+          <p class="subtitle">Here’s what’s happening at your coffee store.</p>
+        </div>
+        <a class="topbar-button" href="/admin/products">＋ Manage Products</a>
+      </header>
+
+      <section class="welcome-banner">
+        <div>
+          <p class="banner-label">YOUR COFFEE BUSINESS</p>
+          <h2>Small sips. Big smiles.</h2>
+          <p>Keep your products fresh and your orders moving.</p>
+        </div>
+        <div class="banner-art" aria-hidden="true">☕</div>
+      </section>
+
+      <section class="stats-grid" aria-label="Order statistics">
+        <article class="stat-card">
+          <div class="stat-top">
+            <span class="stat-icon orders-icon">▤</span>
+            <span class="stat-caption">ALL TIME</span>
+          </div>
+          <p>Total Orders</p>
+          <strong><%= totalOrders %></strong>
+          <small>Orders placed in your store</small>
+        </article>
+
+        <article class="stat-card pending-card">
+          <div class="stat-top">
+            <span class="stat-icon pending-icon">◷</span>
+            <span class="stat-caption">NEEDS ATTENTION</span>
+          </div>
+          <p>Pending Orders</p>
+          <strong><%= pendingOrders %></strong>
+          <small>Orders waiting for an update</small>
+        </article>
+      </section>
+
+      <section class="section-heading">
+        <div>
+          <p class="eyebrow">QUICK ACCESS</p>
+          <h2>Manage your store</h2>
+        </div>
+      </section>
+
+      <section class="action-grid">
+        <a class="action-card" href="/admin/orders">
+          <div class="action-icon">📦</div>
+          <div class="action-copy">
+            <h3>Manage Orders</h3>
+            <p>View customer orders and update their status.</p>
+            <span class="action-link">Open orders <b>→</b></span>
+          </div>
+        </a>
+
+        <a class="action-card" href="/admin/products">
+          <div class="action-icon">☕</div>
+          <div class="action-copy">
+            <h3>Manage Products</h3>
+            <p>Add new coffee, edit details, or remove products.</p>
+            <span class="action-link">Open products <b>→</b></span>
+          </div>
+        </a>
+      </section>
+
+      <footer class="dashboard-footer">
+        <span>SHREE SHYAM COFFEE</span>
+        <span>Made with ☕ for coffee lovers</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

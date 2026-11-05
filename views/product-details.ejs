@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Coffee Menu | Shree Shyam Coffee</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/product-details.css">
+  <link rel="stylesheet" href="/css/footer.css">
+</head>
+
+<body>
+  <%- include("partials/header") %>
+
+    <main class="menu-page">
+      <section class="menu-hero">
+        <p class="eyebrow">BREWED WITH LOVE</p>
+        <h1>Find your <em>coffee moment.</em></h1>
+        <p>Explore our menu and discover your next favourite sip.</p>
+
+        <input id="product-search" class="menu-search" type="search" placeholder="Search coffee, shakes..."
+          aria-label="Search menu">
+      </section>
+
+      <section class="menu-section">
+        <div class="menu-heading">
+          <div>
+            <p class="eyebrow">THE MENU</p>
+            <h2>Made for your mood</h2>
+          </div>
+          <span id="product-count">
+            <%= products.length %> items
+          </span>
+        </div>
+
+        <div class="menu-grid" id="products-grid">
+          <% products.forEach((product)=> { %>
+            <article class="menu-card"
+              data-search="<%= `${product.name || ""} ${product.description || ""}`.toLowerCase() %>">
+              <div class="menu-card-image">
+                <% if (product.image) { %>
+                  <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy">
+                  <% } else { %>
+                    <div class="image-placeholder" aria-label="Coffee image unavailable">☕</div>
+                    <% } %>
+              </div>
+
+              <div class="menu-card-content">
+                <div class="menu-card-title">
+                  <h3>
+                    <%= product.name %>
+                  </h3>
+                  <strong>₹<%= product.price %></strong>
+                </div>
+
+                <p class="menu-description">
+                  <%= product.description || "Fresh, chilled and delicious — made just for you." %>
+                </p>
+
+                <form class="add-cart-form" data-product-id="<%= product._id %>">
+                  <input type="number" name="quantity" value="1" min="1" max="99" required>
+                  <button type="submit">Add to Cart</button>
+                </form>
+              </div>
+            </article>
+            <% }) %>
+        </div>
+
+        <p id="products-empty" class="empty-message" hidden>
+          No coffee found. Try another search.
+        </p>
+      </section>
+    </main>
+
+    <%- include("partials/footer") %>
+
+      <script>
+  document.querySelectorAll(".add-cart-form").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const productId = form.dataset.productId;
+      const quantity = Number(form.querySelector('[name="quantity"]').value);
+
+      if (!Number.isInteger(quantity) || quantity < 1) {
+        alert("Quantity 1 ke tena karta vadhu nakho.");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/cart/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({ productId, quantity })
+        });
+
+        const result = await response.json();
+
+        if (response.status === 401) {
+          window.location.href = "/login";
+          return;
+        }
+
+        if (!response.ok || !result.success) {
+          alert(result.message || "Cart ma add na thayu.");
+          return;
+        }
+
+        window.location.href = "/cart";
+      } catch (error) {
+        alert("Server sathe connection nathi thatu.");
+      }
+      const countElement = document.getElementById("cart-count");
+
+        if (countElement && typeof result.cartCount === "number") {
+          countElement.textContent = result.cartCount;
+        }
+    });
+  });
+</script>
+</body>
+
+</html>

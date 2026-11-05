@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shree Shyam Coffee | Freshly Made</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+  <%- include("partials/header") %>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">SHREE SHYAM COFFEE</p>
+        <h1>A little coffee.<br><span>A lot of happiness.</span></h1>
+        <p class="hero-description">
+          Freshly prepared cold coffee and chilled shakes, made with care
+          to make your day a little better.
+        </p>
+        <div class="hero-highlights">
+          <span>Freshly made</span>
+          <span>Rich &amp; creamy</span>
+          <span>Served chilled</span>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="coffee-circle"><span>☕</span></div>
+        <span class="art-spark spark-one">✦</span>
+        <span class="art-spark spark-two">✧</span>
+        <span class="art-note">Fresh • Chilled • Delicious</span>
+      </div>
+    </section>
+
+    <!-- Product details only -->
+    <section class="products-section" id="our-products">
+      <div class="section-heading">
+        <p class="eyebrow">MADE FRESH FOR YOU</p>
+        <h2>Meet your next <span>favourite</span></h2>
+        <p>A little look at the coffee and shakes we make fresh for you.</p>
+      </div>
+
+      <% if (products && products.length > 0) { %>
+        <div class="products">
+          <% products.forEach(product => { %>
+            <article class="product-card">
+              <div class="product-art">
+                <% if (product.image) { %>
+                  <img src="<%= product.image %>"
+                       alt="<%= product.name %>"
+                       loading="lazy">
+                <% } else { %>
+                  <span class="product-placeholder" aria-hidden="true">🥤</span>
+                <% } %>
+              </div>
+
+              <div class="product-info">
+                <p class="product-label">SHREE SHYAM SPECIAL</p>
+                <h3><%= product.name %></h3>
+
+                <% if (product.size) { %>
+                  <p class="product-size"><%= product.size %></p>
+                <% } %>
+
+                <% if (product.description) { %>
+                  <p class="product-description"><%= product.description %></p>
+                <% } %>
+
+                <div class="product-bottom">
+                  <span class="price">₹<%= product.price %></span>
+                  <span class="fresh-tag">Freshly made</span>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="empty-products">Our products will be available here soon.</p>
+      <% } %>
+    </section>
+
+    <!-- Brand story -->
+    <section class="story-section">
+      <div class="story-art" aria-hidden="true">
+        <div class="story-orbit orbit-one"></div>
+        <div class="story-orbit orbit-two"></div>
+        <div class="story-cup">☕</div>
+        <span class="story-star star-a">✦</span>
+        <span class="story-star star-b">✧</span>
+      </div>
+
+      <div class="story-content">
+        <p class="eyebrow">A GOOD CUP, A GOOD MOMENT</p>
+        <h2>Made fresh.<br><span>Made with care.</span></h2>
+        <p>
+          At Shree Shyam Coffee, every cup is made to bring a refreshing
+          pause to your day. From a creamy cold coffee to a chilled shake,
+          we keep it simple: good flavour, fresh preparation, and a little
+          happiness in every sip.
+        </p>
+        <div class="story-note">
+          <span class="note-icon">✦</span>
+          <span>Take a break. Sip something lovely.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three highlights -->
+    <section class="experience-section">
+      <div class="section-heading">
+        <p class="eyebrow">THE SHREE SHYAM FEELING</p>
+        <h2>Simple things, <span>done well</span></h2>
+        <p>Every detail is about making your coffee moment feel special.</p>
+      </div>
+
+      <div class="experience-grid">
+        <article class="experience-card">
+          <span class="experience-icon">❄</span>
+          <h3>Chilled &amp; refreshing</h3>
+          <p>A cool, refreshing treat for a little break in your day.</p>
+        </article>
+
+        <article class="experience-card">
+          <span class="experience-icon">☕</span>
+          <h3>Freshly prepared</h3>
+          <p>Made fresh when you’re ready for something delicious.</p>
+        </article>
+
+        <article class="experience-card">
+          <span class="experience-icon">♡</span>
+          <h3>A little happiness</h3>
+          <p>Good coffee and good vibes, one sip at a time.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Closing section: details only, no order button -->
+    <section class="closing-section">
+      <div class="closing-decoration" aria-hidden="true">✦</div>
+      <p class="eyebrow">YOUR DAILY DOSE OF HAPPINESS</p>
+      <h2>Make room for<br><span>a little treat.</span></h2>
+      <p>Fresh coffee. Chilled shakes. A moment just for you.</p>
+    </section>
+  </main>
+
+  <%- include("partials/footer") %>
+</body>
+</html>

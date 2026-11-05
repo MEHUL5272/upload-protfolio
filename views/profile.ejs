@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | Shree Shyam Coffee</title>
+
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+  <%- include("partials/header") %>
+
+  <main class="profile-page">
+    <section class="profile-card">
+      <div class="profile-icon">👤</div>
+      <p class="profile-eyebrow">MY ACCOUNT</p>
+      <h1>My Profile</h1>
+      <p class="profile-subtitle">Your account details at a glance.</p>
+
+      <% if (currentUser) { %>
+        <div class="profile-details">
+          <div class="profile-detail">
+            <span>Name</span>
+            <strong>
+              <%= currentUser.name || currentUser.fullName || "Not provided" %>
+            </strong>
+          </div>
+
+          <div class="profile-detail">
+            <span>Email</span>
+            <strong>
+              <%= currentUser.email || "Not provided" %>
+            </strong>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <a class="profile-button primary" href="/my-orders">My Orders</a>
+          <a class="profile-button secondary" href="/">Continue Shopping</a>
+        </div>
+      <% } else { %>
+        <p class="profile-message">Please log in to view your profile.</p>
+        <a class="profile-button primary" href="/login">Login</a>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include("partials/footer") %>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Orders | Admin</title>
+  <link rel="stylesheet" href="/css/admin-orders.css">
+</head>
+<body>
+  <main class="admin-page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">SHREE SHYAM COFFEE</p>
+        <h1>Manage Orders</h1>
+      </div>
+      <a class="back-link" href="/admin">Admin Dashboard</a>
+    </header>
+
+    <% if (!orders || orders.length === 0) { %>
+      <section class="empty-state">
+        <h2>No orders found</h2>
+        <p>Customer orders will appear here.</p>
+      </section>
+    <% } else { %>
+      <section class="orders-list">
+        <% orders.forEach((order) => { %>
+          <article class="order-card">
+            <div class="order-heading">
+              <div>
+                <p class="label">Order ID</p>
+                <strong><%= order._id %></strong>
+              </div>
+
+              <div class="total">
+                <p class="label">Total</p>
+                <strong>₹<%= Number(order.total || 0).toFixed(2) %></strong>
+              </div>
+            </div>
+
+            <div class="customer-details">
+              <p><strong>Name:</strong> <%= order.customerName || "—" %></p>
+              <p><strong>Phone:</strong> <%= order.phone || "—" %></p>
+              <p><strong>Address:</strong> <%= order.address || "—" %></p>
+            </div>
+
+            <div class="items">
+              <h3>Items</h3>
+              <% (order.items || []).forEach((item) => { %>
+                <div class="item-row">
+                  <span><%= item.name %> × <%= item.quantity %></span>
+                  <span>₹<%= (
+                    Number(item.price || 0) * Number(item.quantity || 0)
+                  ).toFixed(2) %></span>
+                </div>
+              <% }) %>
+            </div>
+
+            <div class="status-row">
+              <span class="current-status">
+                Current status: <strong><%= order.status || "Pending" %></strong>
+              </span>
+
+              <form
+                class="status-form"
+                action="/admin/orders/<%= order._id %>/status"
+                method="POST"
+              >
+                <select name="status" required>
+                  <% ["Pending", "Confirmed", "Preparing", "Delivered", "Cancelled"].forEach((status) => { %>
+                    <option
+                      value="<%= status %>"
+                      <%= (order.status || "Pending") === status ? "selected" : "" %>
+                    >
+                      <%= status %>
+                    </option>
+                  <% }) %>
+                </select>
+
+                <button type="submit">Update Status</button>
+              </form>
+            </div>
+          </article>
+        <% }) %>
+      </section>
+    <% } %>
+  </main>
+</body>
+</html>
